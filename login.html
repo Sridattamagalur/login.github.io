@@ -1,28 +1,6 @@
 <!DOCTYPE html>
 
-<?php session_start();
-        
-               
-        if(isset($_POST['login']))
-        {
-            $logins = array('Admin' => 'Admin','user1' => 'pass1','user2' => 'pass2');
-            
-            $Username = isset($_POST['Username']) ? $_POST['Username'] : '';
-            $Password = isset($_POST['Password']) ? $_POST['Password'] : '';
-                
-    
-            if (isset($logins[$Username]) && $logins[$Username] == $Password)
-            {
-                $_SESSION['UserData']['Username']=$logins[$Username];
-                header("location:dash.php");
-                exit;
-            }
-            else 
-            {
-                $msg="<span style='color:red'>Invalid Login Details</span>";
-            }
-        }
-?>
+
 
 <html lang="en">
     <head>
@@ -50,6 +28,9 @@
     </head>
     <body>
         <center>LOGIN</center>
+        <div id="login-error-msg-holder">
+            <p id="login-error-msg">Invalid username <span id="error-msg-second-line">and/or password</span></p>
+        </div>
         <center>
         <form method="post" action="" name="signup-form" id="form">
             <div class="form-element">
@@ -60,14 +41,27 @@
                 <label>Password</label>
                 <input type="password" name="Password" required />
             </div>
-            <button type="submit" name="login" value="login">LOGIN</button>
-            <?php if(isset($msg)){?>
-                <div>
-                <center><?php echo $msg;?></center>
-                </div>
-                <?php } ?>
+            <button type="submit" name="login" value="login" id="login">LOGIN</button>
         </form>
         </center>
     </body>
+    <script>
+        const loginForm = document.getElementById("form");
+        const loginButton = document.getElementById("login");
+        const loginErrorMsg = document.getElementById("login-error-msg");
 
+        loginButton.addEventListener("click", (e) => 
+        {
+            e.preventDefault();
+            const username = loginForm.username.value;
+            const password = loginForm.password.value;
+
+            if (username === "admin" && password === "admin") {
+                alert("You have successfully logged in.");
+                location.reload();
+            } else {
+                loginErrorMsg.style.opacity = 1;
+            }
+        })
+    </script>
 </html>
